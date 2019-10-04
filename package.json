@@ -1,0 +1,20 @@
+{
+  "name": "octo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "lerna run build",
+    "build:prepare": "lerna bootstrap --hoist"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "lerna": "^3.16.4"
+  },
+  "dependencies": {
+    "rimraf": "^3.0.0",
+    "rollup": "^1.23.0"
+  }
+}
