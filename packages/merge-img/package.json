@@ -19,7 +19,7 @@
   },
   "scripts": {
     "test": "echo \"Error: run tests from root\" && exit 1",
-    "start": "node . path=123",
+    "start": "node .",
     "clean": "rimraf dist",
     "build": "npm run clean && npm run build:app",
     "build:app": "rollup src/merge-img.js --file dist/index.js --format umd --name \"main\""
