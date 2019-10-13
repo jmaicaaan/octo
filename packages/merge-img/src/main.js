@@ -1,15 +1,15 @@
 import mergeImg from 'merge-img';
-import { join, extname } from 'path';
+import { extname, join } from 'path';
 import { readdirSync } from 'fs';
-import { pipe, curry } from 'ramda';
+import * as r from 'ramda';
 import program from 'commander';
 
-const version="1.0.0";
+import { version } from '../package.json';
 
 const FILENAME_KEY = 'merged';
 const DEFAULT_FILENAME = `${FILENAME_KEY}-${Date.now()}.png`;
 
-async function main() {
+export default async function main() {
   program
     .version(version)
     .option('-s, --source <source>', 'Directory source to locate files to merge')
@@ -26,10 +26,10 @@ async function main() {
   } = program;
 
   // Note that curried functions should not have optional values :)
-  const paths = pipe(
+  const paths = r.pipe(
     getImageFiles, 
-    curry(includeMergedFiles)({ shouldIncludeMergedFiles: includeAll }), 
-    curry(buildFilePaths)(source),
+    r.curry(includeMergedFiles)({ shouldIncludeMergedFiles: includeAll }), 
+    r.curry(buildFilePaths)(source),
   )(source);
 
   const mergedImg = await mergeImg(paths);
@@ -65,5 +65,3 @@ function buildFilePaths(source, directoryFiles) {
 }
 
 main();
-
-export default main;

@@ -1,11 +1,11 @@
-# `@octo/ccenter`
+# `@octo/diary`
 
 > TODO: description
 
 ## Usage
 
 ```
-const ccenter = require('@octo/ccenter');
+import diary from '@octo/diary';
 
 // TODO: DEMONSTRATE API
 ```

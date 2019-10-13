@@ -1,8 +1,8 @@
 {
-  "name": "@octo/merge-img",
+  "name": "@octo/diary",
   "version": "1.0.0",
   "description": "> TODO: description",
-  "author": "",
+  "author": "JM Santos <johnmichaelubas.santos@gmail.com>",
   "homepage": "",
   "license": "ISC",
   "main": "dist/index.js",
@@ -24,11 +24,10 @@
     "build": "npm run clean && npm run build:app",
     "build:app": "rollup --config ../../config/rollup.config.js"
   },
-  "devDependencies": {
-    "merge-img": "^2.1.3"
-  },
   "dependencies": {
     "commander": "^3.0.2",
+    "date-fns": "^2.4.1",
+    "inquirer": "^7.0.0",
     "ramda": "^0.26.1",
     "rimraf": "^3.0.0",
     "rollup": "^1.23.1"
