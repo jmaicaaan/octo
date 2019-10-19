@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('merge-img'), require('path'), require('fs'), require('ramda'), require('commander'), require('sharp')) :
   typeof define === 'function' && define.amd ? define(['merge-img', 'path', 'fs', 'ramda', 'commander', 'sharp'], factory) :
@@ -84,7 +86,6 @@
   function writeImage(mergeImgInstance, destinationPath) {
     return new Promise((resolve) => {
       mergeImgInstance.write(destinationPath, () => {
-        console.log('destinationPath', destinationPath);
         resolve(destinationPath);
       });
     });
