@@ -27,6 +27,7 @@
     registerOptionListener('create', () => {
       const diaryName = dateFns.format(new Date(), 'MM-dd-yy');
       createDiary(diaryName);
+      openDiary(diaryName);
     });
     registerOptionListener('open', (data) => {
       const diaryName = data === 'today' 

@@ -25,6 +25,7 @@ export default async function main() {
   registerOptionListener('create', () => {
     const diaryName = format(new Date(), 'MM-dd-yy');
     createDiary(diaryName);
+    openDiary(diaryName);
   });
   registerOptionListener('open', (data) => {
     const diaryName = data === 'today' 
