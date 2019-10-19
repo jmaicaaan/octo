@@ -1,4 +1,5 @@
 import json from 'rollup-plugin-json';
+import shebang from 'rollup-plugin-add-shebang';
 
 // Note: To extend this base config, create a `rollup.config.js` on your package
 // then `require` this and set your rollup config location to your new config file.
@@ -27,6 +28,9 @@ export default {
 
       // generate a named export for every property of the JSON object
       namedExports: true // Default: true
+    }),
+    shebang({
+      include: 'dist/index.js'
     })
   ]
 };
