@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('commander'), require('fs'), require('date-fns'), require('path'), require('child_process'), require('inquirer')) :
   typeof define === 'function' && define.amd ? define(['commander', 'fs', 'date-fns', 'path', 'child_process', 'inquirer'], factory) :
