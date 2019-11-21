@@ -5,6 +5,10 @@ import { join } from 'path';
 import { version } from '../package.json';
 
 export default function cli() {
+  // Should we do it through env variable process.env.OCTO_ROOT_DIR?
+  const ROOT_DIR = join(__dirname, '/../../../');
+  const PACKAGES_DIR = join(ROOT_DIR, 'packages');
+
   const instance = program
     .version(version);
 
@@ -25,7 +29,7 @@ export default function cli() {
         commandDescription,
         executableFilePath,
       } = configuration;
-      const executableFile = join('packages', name, executableFilePath);
+      const executableFile = join(PACKAGES_DIR, name, executableFilePath);
       programInstance.command(commandName, commandDescription, { 
         executableFile
       });
@@ -33,10 +37,6 @@ export default function cli() {
   }
 
   function getPackagesConfigurations() {
-    // Should we do it through env variable process.env.OCTO_ROOT_DIR?
-    const ROOT_DIR = join(__dirname, '/../../../');
-    const PACKAGES_DIR = join(ROOT_DIR, 'packages');
-
     const packageNames = readdirSync(PACKAGES_DIR);
     const packageMetadatas = packageNames.map(packageName => ({
       name: packageName,

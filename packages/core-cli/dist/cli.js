@@ -11,6 +11,10 @@
   const version="1.0.0";
 
   function cli() {
+    // Should we do it through env variable process.env.OCTO_ROOT_DIR?
+    const ROOT_DIR = path.join(__dirname, '/../../../');
+    const PACKAGES_DIR = path.join(ROOT_DIR, 'packages');
+
     const instance = program
       .version(version);
 
@@ -31,7 +35,7 @@
           commandDescription,
           executableFilePath,
         } = configuration;
-        const executableFile = path.join('packages', name, executableFilePath);
+        const executableFile = path.join(PACKAGES_DIR, name, executableFilePath);
         programInstance.command(commandName, commandDescription, { 
           executableFile
         });
@@ -39,10 +43,6 @@
     }
 
     function getPackagesConfigurations() {
-      // Should we do it through env variable process.env.OCTO_ROOT_DIR?
-      const ROOT_DIR = path.join(__dirname, '/../../../');
-      const PACKAGES_DIR = path.join(ROOT_DIR, 'packages');
-
       const packageNames = fs.readdirSync(PACKAGES_DIR);
       const packageMetadatas = packageNames.map(packageName => ({
         name: packageName,
