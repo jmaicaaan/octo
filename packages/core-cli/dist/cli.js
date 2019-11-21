@@ -39,7 +39,8 @@
     }
 
     function getPackagesConfigurations() {
-      const ROOT_DIR = process.cwd();
+      // Should we do it through env variable process.env.OCTO_ROOT_DIR?
+      const ROOT_DIR = path.join(__dirname, '/../../../');
       const PACKAGES_DIR = path.join(ROOT_DIR, 'packages');
 
       const packageNames = fs.readdirSync(PACKAGES_DIR);

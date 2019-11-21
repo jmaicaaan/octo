@@ -1,5 +1,5 @@
 import program from 'commander';
-import { readdirSync, readFileSync } from 'fs';
+import { readdirSync } from 'fs';
 import { join } from 'path';
 
 import { version } from '../package.json';
@@ -33,7 +33,8 @@ export default function cli() {
   }
 
   function getPackagesConfigurations() {
-    const ROOT_DIR = process.cwd();
+    // Should we do it through env variable process.env.OCTO_ROOT_DIR?
+    const ROOT_DIR = join(__dirname, '/../../../');
     const PACKAGES_DIR = join(ROOT_DIR, 'packages');
 
     const packageNames = readdirSync(PACKAGES_DIR);
