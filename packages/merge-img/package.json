@@ -29,10 +29,10 @@
   },
   "dependencies": {
     "commander": "^3.0.2",
+    "node-pngquant-native": "^2.1.1",
     "ramda": "^0.26.1",
     "rimraf": "^3.0.0",
-    "rollup": "^1.23.1",
-    "sharp": "^0.23.1"
+    "rollup": "^1.23.1"
   },
   "octo": {
     "isExecutable": true,

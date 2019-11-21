@@ -1,9 +1,9 @@
 import mergeImg from 'merge-img';
 import { extname, join } from 'path';
-import { readdirSync } from 'fs';
+import { readdirSync, readFile, writeFile } from 'fs';
 import * as r from 'ramda';
 import program from 'commander';
-import sharp from 'sharp';
+import { compress } from 'node-pngquant-native';
 
 import { version } from '../package.json';
 
@@ -71,7 +71,13 @@ async function mergeImages(
   } = options;
   if (shouldCompress) {
     const mergedImg = await mergeImg(imagePaths);
-    return sharp(mergedImg.bitmap.data).png().toFile(destinationPath);
+    /**
+     * Compressing image is kinda needs a tweak.
+     * It needs to be written in png before we can compress it.
+     * I hope to optimize this later on.
+     */
+    return writeImage(mergedImg, destinationPath)
+      .then(() => compressImage(destinationPath));
   } else {
     const mergedImg = await mergeImg(imagePaths);
     return writeImage(mergedImg, destinationPath);
@@ -89,6 +95,20 @@ function writeImage(mergeImgInstance, destinationPath) {
 function buildFilePaths(source, directoryFiles) {
   const files = directoryFiles || [];
   return files.map(file => join(source, file));
+}
+
+function compressImage(destinationPath) {
+  return new Promise((resolve, reject) => {
+    readFile(destinationPath, (err, imageBuffer) => {
+      if (err) return reject(err);
+
+      const compressedImageBuffer = compress(imageBuffer);
+      writeFile(destinationPath, compressedImageBuffer, (err) => {
+        if (err) return reject(err);
+        resolve(destinationPath);
+      });
+    });
+  });
 }
 
 main();

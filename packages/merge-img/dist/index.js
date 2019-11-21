@@ -1,14 +1,13 @@
 #!/usr/bin/env node
 
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('merge-img'), require('path'), require('fs'), require('ramda'), require('commander'), require('sharp')) :
-  typeof define === 'function' && define.amd ? define(['merge-img', 'path', 'fs', 'ramda', 'commander', 'sharp'], factory) :
-  (global = global || self, global.bundle = factory(global.mergeImg, global.path, global.fs, global.r, global.program, global.sharp));
-}(this, function (mergeImg, path, fs, r, program, sharp) { 'use strict';
+  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('merge-img'), require('path'), require('fs'), require('ramda'), require('commander'), require('node-pngquant-native')) :
+  typeof define === 'function' && define.amd ? define(['merge-img', 'path', 'fs', 'ramda', 'commander', 'node-pngquant-native'], factory) :
+  (global = global || self, global.bundle = factory(global.mergeImg, global.path, global.fs, global.r, global.program, global.nodePngquantNative));
+}(this, function (mergeImg, path, fs, r, program, nodePngquantNative) { 'use strict';
 
   mergeImg = mergeImg && mergeImg.hasOwnProperty('default') ? mergeImg['default'] : mergeImg;
   program = program && program.hasOwnProperty('default') ? program['default'] : program;
-  sharp = sharp && sharp.hasOwnProperty('default') ? sharp['default'] : sharp;
 
   const version="1.0.0";
 
@@ -76,7 +75,13 @@
     } = options;
     if (shouldCompress) {
       const mergedImg = await mergeImg(imagePaths);
-      return sharp(mergedImg.bitmap.data).png().toFile(destinationPath);
+      /**
+       * Compressing image is kinda needs a tweak.
+       * It needs to be written in png before we can compress it.
+       * I hope to optimize this later on.
+       */
+      return writeImage(mergedImg, destinationPath)
+        .then(() => compressImage(destinationPath));
     } else {
       const mergedImg = await mergeImg(imagePaths);
       return writeImage(mergedImg, destinationPath);
@@ -94,6 +99,20 @@
   function buildFilePaths(source, directoryFiles) {
     const files = directoryFiles || [];
     return files.map(file => path.join(source, file));
+  }
+
+  function compressImage(destinationPath) {
+    return new Promise((resolve, reject) => {
+      fs.readFile(destinationPath, (err, imageBuffer) => {
+        if (err) return reject(err);
+
+        const compressedImageBuffer = nodePngquantNative.compress(imageBuffer);
+        fs.writeFile(destinationPath, compressedImageBuffer, (err) => {
+          if (err) return reject(err);
+          resolve(destinationPath);
+        });
+      });
+    });
   }
 
   main();
